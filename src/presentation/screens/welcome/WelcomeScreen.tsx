@@ -32,7 +32,7 @@ export default function WelcomeScreen() {
   const translateY = useSharedValue(0);
 
   const goToHome = () => {
-    navigation.navigate("Home");
+    navigation.navigate("SlideShow");
   };
 
   const gestureHandler = useAnimatedGestureHandler<PanGestureHandlerGestureEvent>({
