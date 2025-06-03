@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { CarouselFold } from "../../components/ui/carousel/CarouselFold";
 
 
 export const HomeScreen = () => {
@@ -8,7 +9,7 @@ export const HomeScreen = () => {
 
   return (
    <View>
-    <Text>HomeScreen</Text>
+    <CarouselFold/>
    </View>
   );
 };

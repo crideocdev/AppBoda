@@ -85,7 +85,7 @@ export const SlideShowScreen = () => {
           <Button
             text="Finalizar"
             styles={{position: 'absolute', bottom: 60, right: 30, width: 100 }}
-            onPress={()=> navigation.navigate("Dialog")}
+            onPress={()=> navigation.navigate("Home")}
           />
         ):(
       
