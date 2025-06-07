@@ -1,30 +1,39 @@
-import React from "react";
-import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  Dimensions,
+} from "react-native";
 import Animated from "react-native-reanimated";
 import { Ionicons } from "@expo/vector-icons";
+import Modal from "react-native-modal";
 
 interface Props {
   image: any; 
   index: number;
   animationValue: Animated.SharedValue<number>;
+  onPress:(index: number) => void;
 }
 
-/*la idea es cargar el nombre del lugar en la imagen con un icono de flecha direccional.
-Al pulsar en la imagen se monstrara al detalle el lugar.
-*/
+export const CarouselItem: React.FC<Props> = ({ image, index, onPress }) => {
 
-
-export const CarouselItem: React.FC<Props> = ({ image, index }) => {
   return (
-    <TouchableOpacity
-      onPress={() => console.log("Clicked", index)}
-      style={styles.container}
-    >
-      <Image source={image} style={styles.image} resizeMode="cover" />
-      
-    </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => onPress(index)}
+        style={styles.container}
+        activeOpacity={0.8}
+      >
+        <Image source={image} style={styles.image} resizeMode="cover" />
+        
+      </TouchableOpacity>
+
   );
 };
+
+const { width, height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
@@ -34,11 +43,37 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 25,
     marginHorizontal: 10,
-    
   },
   image: {
     width: "100%",
     height: "100%",
-    
-  }
+    borderRadius: 25,
+  },
+    modal: {
+    margin: 0,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  fullScreenImageContainer: {
+    flex:1,
+    backgroundColor: "black",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  fullScreenImage: {
+    width: "100%",
+    height: "80%",
+  },
+  closeButton: {
+    marginTop: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+  },
+  closeButtonText: {
+    fontWeight: "bold",
+    color: "#000",
+    fontSize: 16,
+  },
 });

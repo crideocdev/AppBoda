@@ -6,6 +6,7 @@ export interface ThemeColors {
   background: string;
   cardBackground: string;
   buttonTextColor: string;
+  backgroundSlide: string;
 }
 
 export const colors: ThemeColors = {
@@ -15,26 +16,8 @@ export const colors: ThemeColors = {
   background: "#F3F2F7",
   cardBackground: "white",
   buttonTextColor: "white",
+  backgroundSlide: "#605D5C",
 };
-
-export const lightColors: ThemeColors = {
-  primary: "#5856D6",
-  text: "black",
-
-  background: "#F3F2F7",
-  cardBackground: "white",
-  buttonTextColor: "white",
-};
-
-export const darkColors: ThemeColors = {
-  primary: '#5856D6',
-  text: 'white',
-
-  background: '#090909',
-  cardBackground: '#2d2d2d',
-  buttonTextColor: 'white',
-}
-
 
 
 
@@ -77,6 +60,48 @@ export const globalStyles = StyleSheet.create({
   },
   btnPrimaryText: {
     // color: colors.text,
+    fontSize: 16,
+  },
+   btnFixed: {
+    position: 'absolute',
+    bottom: 20,
+    width: 60,
+    backgroundColor: '#007AFF',
+    paddingVertical: 10,
+    justifyContent: 'center',
+    borderRadius: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    elevation: 5, // Android
+    shadowColor: '#000', // iOS
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 5,
+  },
+   btnImagePicker: {
+    position: 'absolute',
+    bottom: 20,
+    width: 60,
+    right: 20,
+    backgroundColor: '#007AFF',
+    paddingVertical: 10,
+    justifyContent: 'center',
+    borderRadius: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    elevation: 5, // Android
+    shadowColor: '#000', // iOS
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 5,
+  },
+  btnFixedContent: {
+    alignItems: 'center',
+  },
+  
+  btnFixedText: {
+    color: 'white',
+    fontWeight: 'bold',
     fontSize: 16,
   },
 });

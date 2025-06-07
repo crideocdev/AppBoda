@@ -1,20 +1,38 @@
 import React from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
+import { View, StyleSheet, Dimensions, Image } from "react-native";
 import Carousel, { TAnimationStyle } from "react-native-reanimated-carousel";
-import Animated, { Extrapolation, interpolate } from "react-native-reanimated";
+import Animated, { interpolate, Extrapolation } from "react-native-reanimated";
 import { CarouselItem } from "./CarouselItem";
 import { getImages } from "../../../utils/get-images";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParams } from "../../../navigations/Navigation";
+
 
 const PAGE_WIDTH = Dimensions.get("window").width;
 const PAGE_HEIGHT = Dimensions.get("window").height;
-
 
 export const CarouselFold = () => {
   const itemSize = PAGE_WIDTH * 0.7;
   const centerOffset = PAGE_WIDTH / 2 - itemSize / 2;
   const sideItemCount = 6;
-  const sideItemWidth = (PAGE_WIDTH - itemSize);
-  const data = getImages(4);
+  const sideItemWidth = PAGE_WIDTH - itemSize;
+
+  const data = getImages(8);
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
+
+  const openViewer = (index: number) => {
+    const imagesForViewer = data.map((img) =>
+      typeof img === "number"
+        ? { uri: Image.resolveAssetSource(img).uri }
+        : { uri: img.uri }
+    );
+
+    navigation.navigate("Gallery", {
+      images: imagesForViewer,
+      index: index,
+    });
+  };
 
   const animationStyle: TAnimationStyle = React.useCallback(
     (value: number) => {
@@ -43,20 +61,9 @@ export const CarouselFold = () => {
         centerOffset -
         itemOffset;
 
-      const translateY = interpolate(
-        value,
-        [-1,0,1],
-        [20,0,20],
-        Extrapolation.CLAMP
-      );
+      const translateY = interpolate(value, [-1, 0, 1], [20, 0, 20], Extrapolation.CLAMP);
 
-      //modificar la opcidad de los 3 componentes que se ven
-      const opacity = interpolate(
-        value,
-        [-1, 0, 1],
-        [1, 1, 1],
-        Extrapolation.CLAMP
-      )
+      const opacity = interpolate(value, [-1, 0, 1], [1, 1, 1], Extrapolation.CLAMP);
       const width = interpolate(
         value,
         [-1, 0, 1],
@@ -65,7 +72,7 @@ export const CarouselFold = () => {
       );
 
       return {
-        transform: [{ translateX: translateX}, { translateY: translateY }],
+        transform: [{ translateX }, { translateY }],
         width,
         opacity,
         overflow: "hidden",
@@ -78,7 +85,7 @@ export const CarouselFold = () => {
     <View style={styles.container}>
       <Carousel
         width={PAGE_WIDTH}
-        height={PAGE_HEIGHT/2}
+        height={PAGE_HEIGHT / 2}
         style={styles.carousel}
         loop
         windowSize={Math.round(data.length / 2)}
@@ -86,7 +93,12 @@ export const CarouselFold = () => {
         autoPlayInterval={1200}
         data={data}
         renderItem={({ item, index, animationValue }) => (
-          <CarouselItem image={item} index={index} animationValue={animationValue} />
+          <CarouselItem
+            image={item}
+            index={index}
+            animationValue={animationValue}
+            onPress={openViewer}
+          />
         )}
         customAnimation={animationStyle}
       />
@@ -97,12 +109,11 @@ export const CarouselFold = () => {
 const styles = StyleSheet.create({
   container: {
     width: PAGE_WIDTH,
-    height: PAGE_HEIGHT/2,
-    marginBottom: 0
-    
+    height: PAGE_HEIGHT / 2,
+    marginBottom: 0,
   },
   carousel: {
     width: PAGE_WIDTH,
-    height:PAGE_HEIGHT,
+    height: PAGE_HEIGHT,
   },
 });
