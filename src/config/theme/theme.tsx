@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 
 export interface ThemeColors {
   primary: string;
+  secundary: string;
   text: string;
   background: string;
   cardBackground: string;
@@ -10,10 +11,11 @@ export interface ThemeColors {
 }
 
 export const colors: ThemeColors = {
-  primary: "#5856D6",
+  primary: "#66845E",
+  secundary: "#415564",
   text: "black",
 
-  background: "#F3F2F7",
+  background: "#C5D3C0",
   cardBackground: "white",
   buttonTextColor: "white",
   backgroundSlide: "#605D5C",
@@ -66,7 +68,7 @@ export const globalStyles = StyleSheet.create({
     position: 'absolute',
     bottom: 20,
     width: 60,
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.primary,
     paddingVertical: 10,
     justifyContent: 'center',
     borderRadius: 10,
@@ -83,7 +85,7 @@ export const globalStyles = StyleSheet.create({
     bottom: 20,
     width: 60,
     right: 20,
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.secundary,
     paddingVertical: 10,
     justifyContent: 'center',
     borderRadius: 10,

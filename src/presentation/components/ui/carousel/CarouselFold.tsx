@@ -28,7 +28,7 @@ export const CarouselFold = () => {
         : { uri: img.uri }
     );
 
-    navigation.navigate("Gallery", {
+    navigation.navigate("GalleryViewer", {
       images: imagesForViewer,
       index: index,
     });

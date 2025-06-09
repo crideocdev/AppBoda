@@ -17,6 +17,7 @@ import { useNavigation } from "@react-navigation/native";
 import { RootStackParams } from "../../navigations/Navigation";
 import { colors } from "../../../config/theme/theme";
 import { green } from "react-native-reanimated/lib/typescript/Colors";
+import { useIntroStore } from "../../store/useIntroStore";
 
 type NavigationProp = StackNavigationProp<RootStackParams, "SlideShow">;
 
@@ -48,6 +49,16 @@ export const SlideShowScreen = () => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
   const navigation = useNavigation<NavigationProp>();
+  const {setIntroShown} = useIntroStore();
+
+  //Para saltar una vez visto
+  const handleContinue = () => {
+    setIntroShown();
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Home" }],
+    });
+  };
 
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { contentOffset, layoutMeasurement } = event.nativeEvent;
@@ -91,7 +102,7 @@ export const SlideShowScreen = () => {
         <Button
           text="Finalizar"
           styles={{ position: "absolute", bottom: 60, right: 30, width: 100 }}
-          onPress={() => navigation.navigate("Home")}
+          onPress={handleContinue}
         />
       ) : (
         <Button

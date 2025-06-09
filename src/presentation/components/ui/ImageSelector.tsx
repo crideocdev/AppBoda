@@ -1,100 +1,83 @@
-// src/components/ImageSelector.tsx
-import React, { useState } from 'react';
-import {
-  View,
-  Alert,
-  ScrollView,
-  Image,
-  StyleSheet,
-  Pressable,
-} from 'react-native';
+// src/components/ImageSelectorButton.tsx
+import React from 'react';
+import { Pressable, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import { Ionicons } from '@expo/vector-icons';
 import { globalStyles } from '../../../config/theme/theme';
+import { APP_FOLDER } from '../../../constants/paths';
+import useContadorStore from '../../store/useContadorStore';
 
-const MAX_IMAGES = 3;
-const INTERNAL_DIR = FileSystem.documentDirectory + 'my_images/';
+const INTERNAL_DIR = FileSystem.documentDirectory + APP_FOLDER;
+const MAX_IMAGES = 10;
 
-export const ImageSelector = () => {
-  const [images, setImages] = useState<string[]>([]);
-
-  const pickImages = async () => {
-    if (images.length >= MAX_IMAGES) {
-      Alert.alert('Límite alcanzado', `Máximo de ${MAX_IMAGES} imágenes`);
-      return;
+export const ImageSelector = ({ onImageSaved }: { onImageSaved?: () => void }) => {
+  const { contador, setContador,decrementar } = useContadorStore();
+  const handleImagePickerPress = async () => {
+  try {
+      // Comprobar si la carpeta existe
+      const dirInfo = await FileSystem.getInfoAsync(INTERNAL_DIR);
+      if (!dirInfo.exists) {
+        // Crear la carpeta si no existe
+        await FileSystem.makeDirectoryAsync(INTERNAL_DIR, { intermediates: true });
+      }
+    } catch (error) {
+      console.error('Error al crear la carpeta:', error);
     }
 
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert('Permiso denegado', 'Se necesita acceso a la galería');
-      return;
-    }
+    try {
+      // Leer la carpeta para saber cuántas imágenes ya hay
+      const files = await FileSystem.readDirectoryAsync(INTERNAL_DIR);
+      const currentCount = files.length;
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsMultipleSelection: true,
-      selectionLimit: MAX_IMAGES - images.length,
-      quality: 1,
-    });
+      if (currentCount >= MAX_IMAGES) {
+        Alert.alert('Límite alcanzado', `Ya tienes ${MAX_IMAGES} imágenes guardadas.`);
+        return;
+      }
 
-    if (!result.canceled && result.assets.length > 0) {
-      const newImageUris: string[] = [];
+      const maxSelectable = MAX_IMAGES - currentCount;
+      console.log(maxSelectable);
+      
 
-      for (const asset of result.assets) {
-        const filename = asset.uri.split('/').pop();
-        const newPath = INTERNAL_DIR + filename;
+      const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (!permission.granted) {
+        Alert.alert('Permiso denegado', 'Se necesita acceso a la galería');
+        return;
+      }
 
-        try {
-          await FileSystem.makeDirectoryAsync(INTERNAL_DIR, {
-            intermediates: true,
-          });
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsMultipleSelection: true,
+        quality: 1,
+        selectionLimit: maxSelectable,  // limitar selección según lo que falta
+        aspect: [1, 1],
+      });
 
+      if (!result.canceled) {
+        await FileSystem.makeDirectoryAsync(INTERNAL_DIR, { intermediates: true });
+
+        for (const asset of result.assets) {
+          const filename = asset.uri.split('/').pop();
+          const newPath = INTERNAL_DIR + filename;
+          decrementar();
           await FileSystem.copyAsync({
             from: asset.uri,
             to: newPath,
           });
-
-          newImageUris.push(newPath);
-        } catch (error) {
-          console.error('Error copiando imagen:', error);
         }
-      }
 
-      setImages((prev) => [...prev, ...newImageUris]);
+        Alert.alert('Imágenes guardadas', 'Las imágenes se han almacenado correctamente');
+      }
+      onImageSaved?.();
+    } catch (error) {
+      console.error('Error guardando imágenes:', error);
+      Alert.alert('Error', 'No se pudo guardar las imágenes');
     }
   };
 
   return (
-    <View>
-      <Pressable onPress={pickImages} style={globalStyles.btnImagePicker}>
-        <Ionicons name="attach-outline" size={30} color="white" />
-      </Pressable>
-
-      <ScrollView horizontal contentContainerStyle={styles.imageRow}>
-        {images.map((uri, index) => (
-          <Image
-            key={index}
-            source={{ uri }}
-            style={styles.image}
-            resizeMode="cover"
-          />
-        ))}
-      </ScrollView>
-    </View>
+    <Pressable onPress={handleImagePickerPress} style={globalStyles.btnImagePicker}>
+      <Ionicons name="attach-outline" size={30} color="white" />
+    </Pressable>
   );
 };
-
-const styles = StyleSheet.create({
-  imageRow: {
-    flexDirection: 'row',
-    paddingVertical: 10,
-    paddingHorizontal: 5,
-  },
-  image: {
-    width: 100,
-    height: 100,
-    marginRight: 10,
-    borderRadius: 10,
-  },
-});

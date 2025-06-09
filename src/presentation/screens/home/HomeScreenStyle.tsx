@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../../../config/theme/theme";
 
 
 const styles = StyleSheet.create({
@@ -7,6 +8,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     paddingHorizontal: 10,
     paddingVertical: 5,
+    
   },
   ContadorFotos:{
     position: 'absolute',

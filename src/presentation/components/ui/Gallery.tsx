@@ -1,89 +1,87 @@
-// src/screens/ImageGallery.tsx
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, Image, StyleSheet, Text } from 'react-native';
-import * as MediaLibrary from 'expo-media-library';
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
+import * as FileSystem from 'expo-file-system';
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import {RootStackParams} from '../../navigations/Navigation';
+import { useNavigation } from '@react-navigation/native';
+import { APP_FOLDER } from '../../../constants/paths';
+
+const INTERNAL_DIR = FileSystem.documentDirectory + APP_FOLDER;
 
 export const Gallery = () => {
-  const [images, setImages] = useState<MediaLibrary.Asset[]>([]);
-  const [permission, setPermission] = useState<boolean | null>(null);
+  const [images, setImages] = useState<string[]>([]);
+   const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
+   
+    
 
-  useEffect(() => {
-    requestPermissionAndLoad();
-  }, []);
-
-  const requestPermissionAndLoad = async () => {
-    const { status } = await MediaLibrary.requestPermissionsAsync();
-    if (status === 'granted') {
-      setPermission(true);
-      loadImagesFromAlbum();
-    } else {
-      setPermission(false);
-    }
-  };
-
-  const loadImagesFromAlbum = async () => {
+  const loadImages = async () => {
     try {
-      const album = await MediaLibrary.getAlbumAsync('AppBoda');
-      if (!album) {
-        console.log('No se encontró el álbum AppBoda');
-        return;
-      }
-
-      const assets = await MediaLibrary.getAssetsAsync({
-        album: album,
-        mediaType: 'photo',
-        first: 100, // puedes ajustar este número
-        sortBy: [['creationTime', false]], // más recientes primero
-      });
-
-      setImages(assets.assets);
+      const files = await FileSystem.readDirectoryAsync(INTERNAL_DIR);
+      const imagePaths = files.map((filename) => INTERNAL_DIR + filename);
+      setImages(imagePaths);
     } catch (error) {
-      console.error('Error al cargar imágenes del álbum:', error);
+      console.error('Error leyendo imágenes:', error);
     }
   };
 
-  if (permission === false) {
-    return (
-      <View style={styles.center}>
-        <Text>Permiso para acceder a la galería denegado.</Text>
-      </View>
-    );
-  }
+   useEffect(() => {
+       loadImages();
+     }, []);
+
+  const openViewer = (index: number) => {
+    const imagesForViewer = images.map((uri) => ({ uri }));
+    navigation.navigate('GalleryViewer',{
+      images: imagesForViewer,
+      index
+    });
+  };
 
   if (images.length === 0) {
-    return (
-      <View style={styles.center}>
-        <Text>No hay imágenes guardadas en AppBoda.</Text>
-      </View>
-    );
+    return <Text style={styles.emptyText}>No hay imágenes guardadas.</Text>;
   }
 
   return (
     <FlatList
       data={images}
-      keyExtractor={(item) => item.id}
-      numColumns={3}
-      contentContainerStyle={styles.container}
-      renderItem={({ item }) => (
-        <Image source={{ uri: item.uri }} style={styles.image} />
+      numColumns={5}
+      keyExtractor={(item, index) => `${item}-${index}`}
+      renderItem={({ item, index }) => (
+        <TouchableOpacity
+          onPress={() => openViewer(index)}
+          activeOpacity={0.8}
+        >
+          <Image source={{ uri: item }} style={styles.image} />
+        </TouchableOpacity>
       )}
+      contentContainerStyle={styles.imageGrid}
+      showsVerticalScrollIndicator={false}
     />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 10,
+  imageGrid: {
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    alignItems: 'center',
   },
   image: {
-    width: 100,
-    height: 100,
+    width: Dimensions.get('window').width / 5 - 12,
+    height: Dimensions.get('window').width / 5 - 12,
     margin: 5,
     borderRadius: 10,
   },
-  center: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+  emptyText: {
+    textAlign: 'center',
+    padding: 20,
+    fontSize: 16,
+    color: 'gray',
   },
 });
