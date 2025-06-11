@@ -1,1 +1,1 @@
-export const APP_FOLDER = "AppbodaPru/";
+export const APP_FOLDER = "AppbodaPrueba/";

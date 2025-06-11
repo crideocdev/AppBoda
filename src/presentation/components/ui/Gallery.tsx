@@ -68,6 +68,7 @@ export const Gallery = () => {
 
 const styles = StyleSheet.create({
   imageGrid: {
+    marginTop: -20,
     paddingVertical: 10,
     paddingHorizontal: 5,
     alignItems: 'center',

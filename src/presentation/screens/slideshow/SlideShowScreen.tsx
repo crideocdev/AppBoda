@@ -16,7 +16,6 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackParams } from "../../navigations/Navigation";
 import { colors } from "../../../config/theme/theme";
-import { green } from "react-native-reanimated/lib/typescript/Colors";
 import { useIntroStore } from "../../store/useIntroStore";
 
 type NavigationProp = StackNavigationProp<RootStackParams, "SlideShow">;
@@ -56,7 +55,7 @@ export const SlideShowScreen = () => {
     setIntroShown();
     navigation.reset({
       index: 0,
-      routes: [{ name: "Home" }],
+     routes:[{name:"Home"}]
     });
   };
 

@@ -1,28 +1,39 @@
-import React, { use, useCallback, useState } from "react";
-import { Text, ScrollView, View, ImageBackground } from "react-native";
+import React, {useCallback, useState } from "react";
+import { Text,ImageBackground } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { CarouselFold } from "../../components/ui/carousel/CarouselFold";
 import { Gallery } from "../../components/ui/Gallery";
-import { Separator } from "../../components/ui/Separator";
 import { ButtonFixed } from "../../components/ui/ButtonFixed";
 import styles from "./HomeScreenStyle";
 import { ImageSelector } from "../../components/ui/ImageSelector";
 import { useEffect } from "react";
 import * as FileSystem from "expo-file-system";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import useContadorStore from "../../store/useContadorStore";
 import { APP_FOLDER } from "../../../constants/paths";
+import { RootStackParams } from "../../navigations/Navigation";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { useFonts, GreatVibes_400Regular } from "@expo-google-fonts/great-vibes";
 
 const INTERNAL_DIR = FileSystem.documentDirectory + APP_FOLDER;
+type NavigationProp = StackNavigationProp<RootStackParams, "CameraCapture">;
 
 export const HomeScreen = () => {
   const { top } = useSafeAreaInsets(); //obtenemos el espacio de arriba de la pantalla
   const [refreshGallery, setRefreshGallery] = useState(0);
-  const { contador, decrementar, setContador } = useContadorStore();
+  const { contador } = useContadorStore();
+  const navigation = useNavigation<NavigationProp>();
 
-  console.log(contador);
-  //cambiamos el contador de fotos
+   const [fontsLoaded] = useFonts({
+    GreatVibes_400Regular,
+  });
+
+
+   const goToTakePicture = () => {
+    navigation.navigate("CameraCapture");
+  };
+
   const loadImageCount = async () => {
     try {
       const files = await FileSystem.readDirectoryAsync(INTERNAL_DIR);
@@ -45,8 +56,8 @@ export const HomeScreen = () => {
   return (
     <ImageBackground source={require("../../../../assets/backgroundApp.png")} style={[styles.container, { paddingTop: top }]} resizeMode="cover">
       <CarouselFold />
-      <Text style={{}}>Galeria</Text>
-      <Gallery key={refreshGallery} />
+      <Text style={{marginTop:30,fontSize:54,fontFamily:"GreatVibes_400Regular"}}>Fotos</Text>
+      <Gallery  key={refreshGallery} />
       <ImageSelector
         onImageSaved={() => {
           setRefreshGallery((prev) => prev + 1);
@@ -57,8 +68,8 @@ export const HomeScreen = () => {
         icon={<Ionicons name="camera-outline" size={40} color="white" />}
         text=""
         position="center"
-        style={{ bottom: 50, borderRadius: 100, width: 90, height: 90 }}
-        onPress={() => console.log("Tomar Foto")}
+        style={{ bottom: 50, borderRadius: 100, width: 90, height: 90, marginLeft:10 }}
+        onPress={() =>goToTakePicture() }
       />
       <Text style={styles.ContadorFotos}>{contador}</Text>
     </ImageBackground>

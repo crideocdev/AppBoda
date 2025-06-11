@@ -1,0 +1,84 @@
+import { StyleSheet } from "react-native";
+import { colors } from "../../../../config/theme/theme";
+
+
+const styles = StyleSheet.create({
+   container: {
+    flex: 1,
+    backgroundColor: "#C5D3C0",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  camera: {
+    flex: 1,
+    width: "100%",
+  },
+  topBar: {
+    position: "absolute",
+    top: 50,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+    paddingHorizontal: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  backButton: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  contadorText: {
+    color: "black",
+    backgroundColor: colors.background,
+    borderRadius: 50,
+    padding: 10,
+    fontSize: 32,
+    fontWeight: "bold",
+  },
+  shutterContainer: {
+    position: "absolute",
+    bottom: 44,
+    left: 0,
+    right: 0,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  shutterBtn: {
+    backgroundColor: "transparent",
+    borderWidth: 5,
+    borderColor: "white",
+    width: 85,
+    height: 85,
+    borderRadius: 45,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  shutterBtnInner: {
+    width: 70,
+    height: 70,
+    borderRadius: 50,
+  },
+  rotateButton: {
+    position: "absolute",
+    bottom: 44,
+    right: 30,
+  },alerta: {
+    position: "absolute",
+    top: 100,
+    left: 0,
+    right: 0,
+    padding: 12,
+    backgroundColor: "#ff4444cc",
+    alignItems: "center",
+    zIndex: 20,
+  },
+  alertaTexto: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+ 
+});
+
+export default styles;
