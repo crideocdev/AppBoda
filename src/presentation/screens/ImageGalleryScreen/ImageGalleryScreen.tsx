@@ -9,6 +9,7 @@ type GalleryRouteProp = RouteProp<RootStackParams, "Gallery">;
 export const ImageGalleryScreen = () => {
   const route = useRoute<GalleryRouteProp>();
   const navigation = useNavigation();
+
   if(!route.params) return null;
   const { images, index } = route.params;
 

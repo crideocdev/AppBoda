@@ -21,6 +21,8 @@ import Animated, {
 } from "react-native-reanimated";
 
 import styles from "./WelcomeScreenStyle";
+import { useIntroStore } from "../../store/useIntroStore";
+import { GreatVibes_400Regular, useFonts } from "@expo-google-fonts/great-vibes";
 
 type NavigationProp = StackNavigationProp<RootStackParams, "Welcome">;
 
@@ -30,9 +32,14 @@ const MAX_TRANSLATE_Y = -SCREEN_HEIGHT / 2;
 export default function WelcomeScreen() {
   const navigation = useNavigation<NavigationProp>();
   const translateY = useSharedValue(0);
+  const { introShown } = useIntroStore();
+
+   const [fontsLoaded] = useFonts({
+      GreatVibes_400Regular,
+    });
 
   const goToHome = () => {
-    navigation.navigate("SlideShow");
+    introShown ? navigation.navigate("Home") : navigation.navigate("SlideShow");
   };
 
   const gestureHandler = useAnimatedGestureHandler<PanGestureHandlerGestureEvent>({
@@ -70,7 +77,7 @@ export default function WelcomeScreen() {
       style={styles.container}
      >
       <View style={styles.textContainer}>
-        <Text style={styles.title}>Boda</Text>
+        <Text style={[styles.title,{fontFamily:'GreatVibes_400Regular'}]}>{"Maria Isabel\n Y \n Antonio"} </Text>
       </View>
 
       <PanGestureHandler onGestureEvent={gestureHandler}>

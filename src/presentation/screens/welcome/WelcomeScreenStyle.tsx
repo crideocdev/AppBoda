@@ -1,10 +1,12 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../../../config/theme/theme";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-between",
     paddingVertical: 80,
+    backgroundColor:colors.background
   },
   textContainer: {
     paddingHorizontal: 30,
@@ -12,8 +14,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "#fff",
-    fontSize: 30,
-    fontWeight: "bold",
+    fontSize: 60,
+    textAlign: "center",
   },
   subtitle: {
     color: "#fff",
@@ -24,7 +26,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#fff",
+    backgroundColor: colors.primary,
     width: 80,
     height: 80,
     borderRadius: 40,

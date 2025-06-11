@@ -8,8 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 import Animated from "react-native-reanimated";
-import { Ionicons } from "@expo/vector-icons";
-import Modal from "react-native-modal";
+
 
 interface Props {
   image: any; 
