@@ -35,10 +35,10 @@ const {introShown} = useIntroStore();
       {!introShown ?(
         
          <Stack.Screen name="Dialog" component={DialogScreen}/>
-      ):(
-        <Stack.Screen name="Home" component={HomeScreen} />
-      )
+      ):null
+      
       }
+        <Stack.Screen name="Home" component={HomeScreen} />
 
       <Stack.Screen name="Gallery" component={ImageGalleryScreen} />
       <Stack.Screen name="GalleryViewer" component={GalleryViewer} />
