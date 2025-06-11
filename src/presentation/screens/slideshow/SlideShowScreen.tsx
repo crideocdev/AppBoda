@@ -51,12 +51,17 @@ export const SlideShowScreen = () => {
   const {setIntroShown} = useIntroStore();
 
   //Para saltar una vez visto
-  const handleContinue = () => {
-    setIntroShown();
-    navigation.reset({
-      index: 0,
-     routes:[{name:"Home"}]
-    });
+  // const handleContinue = () => {
+  //   setIntroShown();
+  //   navigation.reset({
+  //     index: 0,
+  //    routes:[{name:"Home"}]
+  //   });
+  // };
+
+   const handleContinue = () => {
+    
+    navigation.navigate("Dialog")
   };
 
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {

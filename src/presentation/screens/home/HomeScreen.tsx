@@ -15,6 +15,7 @@ import { APP_FOLDER } from "../../../constants/paths";
 import { RootStackParams } from "../../navigations/Navigation";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useFonts, GreatVibes_400Regular } from "@expo-google-fonts/great-vibes";
+import { useNameStore } from "../../store/useNameStore";
 
 const INTERNAL_DIR = FileSystem.documentDirectory + APP_FOLDER;
 type NavigationProp = StackNavigationProp<RootStackParams, "CameraCapture">;
@@ -24,6 +25,8 @@ export const HomeScreen = () => {
   const [refreshGallery, setRefreshGallery] = useState(0);
   const { contador } = useContadorStore();
   const navigation = useNavigation<NavigationProp>();
+  const {nameShown, setNameShown} = useNameStore();
+  
 
    const [fontsLoaded] = useFonts({
     GreatVibes_400Regular,
@@ -56,7 +59,7 @@ export const HomeScreen = () => {
   return (
     <ImageBackground source={require("../../../../assets/backgroundApp.png")} style={[styles.container, { paddingTop: top }]} resizeMode="cover">
       <CarouselFold />
-      <Text style={{marginTop:30,fontSize:54,fontFamily:"GreatVibes_400Regular"}}>Fotos</Text>
+      <Text style={{marginTop:30,fontSize:54,fontFamily:"GreatVibes_400Regular"}}>{"Hola "+ nameShown}</Text>
       <Gallery  key={refreshGallery} />
       <ImageSelector
         onImageSaved={() => {
