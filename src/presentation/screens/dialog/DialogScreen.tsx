@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'reac
 import { globalStyles } from '../../../config/theme/theme';
 import { useNameStore } from '../../store/useNameStore';
 import { useIntroStore } from "../../store/useIntroStore";
-import { NavigationContainerProps, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParams } from '../../navigations/Navigation';
 
@@ -22,6 +22,7 @@ export const DialogScreen = () => {
       index: 0,
      routes:[{name:"Home"}]
     });
+    // navigation.navigate("App");
   };
 
   const handleConfirm = () => {

@@ -7,6 +7,7 @@ import { ImageGalleryScreen } from "../screens/ImageGalleryScreen/ImageGallerySc
 import { GalleryViewer } from "../components/ui/GalleryViewer";
 import { useIntroStore } from "../store/useIntroStore";
 import CameraCapture from "../components/ui/Camara/CamaraCapture";
+import App from "../../drive/App";
 
 export type RootStackParams = {
   Home: undefined;
@@ -17,6 +18,7 @@ export type RootStackParams = {
   Gallery: undefined;
   GalleryViewer: { images: { uri: string }[]; index: number };
   CameraCapture: undefined;
+  App: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParams>();
@@ -46,6 +48,7 @@ export const Navigation = () => {
       <Stack.Screen name="Gallery" component={ImageGalleryScreen} />
       <Stack.Screen name="GalleryViewer" component={GalleryViewer} />
       <Stack.Screen name="CameraCapture" component={CameraCapture} />
+      <Stack.Screen name="App" component={App} />
     </Stack.Navigator>
   );
 };

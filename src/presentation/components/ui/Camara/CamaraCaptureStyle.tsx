@@ -78,6 +78,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+  mensajeContainer: {
+  position: "absolute",
+  bottom: 50,
+  alignSelf: "center",
+  backgroundColor: "rgba(0,0,0,0.7)",
+  paddingHorizontal: 20,
+  paddingVertical: 10,
+  borderRadius: 10,
+},
+mensajeTexto: {
+  color: "white",
+  fontSize: 16,
+},
  
 });
 
