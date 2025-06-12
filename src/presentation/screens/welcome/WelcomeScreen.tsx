@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, Text, Dimensions } from "react-native";
+import { View, Text, Dimensions, ImageBackground } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParams } from "../../navigations/Navigation";
@@ -87,18 +87,24 @@ export default function WelcomeScreen() {
   }
 
   return (
-    <Animated.View style={[styles.container, animatedStyle]}>
-      <View style={styles.textContainer}>
-        <Text style={[styles.title, { fontFamily: "GreatVibes_400Regular" }]}>
-          {"Maria Isabel\n Y \n Antonio"}
-        </Text>
-      </View>
+    <ImageBackground
+  source={require("../../../../assets/dorado-definitivo.png")}
+  style={styles.container}
+  resizeMode="contain"
+>
+  <Animated.View style={[styles.animatedContainer, animatedStyle]}>
+    <View style={styles.textContainer}>
+      <Text style={[styles.title, { fontFamily: "GreatVibes_400Regular" }]}>
+        {"Maria Isabel\n Y \n Antonio"}
+      </Text>
+    </View>
 
-      <PanGestureHandler onGestureEvent={gestureHandler}>
-        <Animated.View style={[styles.button, swipeAnimatedStyle]}>
-          <AntDesign name="up" size={24} color="#000" />
-        </Animated.View>
-      </PanGestureHandler>
-    </Animated.View>
+    <PanGestureHandler onGestureEvent={gestureHandler}>
+      <Animated.View style={[styles.button, swipeAnimatedStyle]}>
+        <AntDesign name="up" size={24} color="#000" />
+      </Animated.View>
+    </PanGestureHandler>
+  </Animated.View>
+</ImageBackground>
   );
 }

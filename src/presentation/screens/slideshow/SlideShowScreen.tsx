@@ -40,7 +40,7 @@ const items: Slide[] = [
   {
     title: "Titulo 3",
     desc: " ¡Muchísima suerte en este maravilloso e inaudito reportaje! Gracias por ayudarnos a guardar recuerdos inolvidables. ",
-    img: require("../../../../assets/pht02.png"),
+    img: require("../../../../assets/pht03.png"),
   },
 ];
 

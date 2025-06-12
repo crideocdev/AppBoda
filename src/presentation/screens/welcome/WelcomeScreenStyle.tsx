@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-between",
-    paddingVertical: 80,
+    paddingVertical: 40,
     backgroundColor:colors.background
   },
   textContainer: {
@@ -35,6 +35,11 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowRadius: 6,
   },
+  animatedContainer: {
+  flex: 1,
+  justifyContent: "space-between",
+  paddingVertical: 80,
+}
 });
 
 export default styles;
