@@ -14,11 +14,12 @@ export const colors: ThemeColors = {
   primary: "#66845E",
   secundary: "#415564",
   text: "black",
+  backgroundSlide:"#A8C79F", 
 
   background: "#C5D3C0",
   cardBackground: "white",
   buttonTextColor: "white",
-  backgroundSlide: "#605D5C",
+ 
 };
 
 

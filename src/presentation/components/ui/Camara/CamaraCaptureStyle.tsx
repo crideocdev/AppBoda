@@ -94,6 +94,12 @@ mensajeTexto: {
   color: "white",
   fontSize: 16,
 },
+container2:{
+  flex:1,
+  justifyContent: "center",
+  paddingVertical: 80,
+   alignItems: "center"
+}
  
 });
 

@@ -6,6 +6,7 @@ import {
   Button,
   Text,
   Animated,
+  ImageBackground,
 } from "react-native";
 import {
   CameraView,
@@ -20,6 +21,7 @@ import { useNavigation } from "@react-navigation/native";
 import { APP_FOLDER as carpeta } from "../../../../constants/paths";
 import useContadorStore from "../../../store/useContadorStore";
 import { useNameStore } from "../../../store/useNameStore";
+import { colors, globalStyles } from "../../../../config/theme/theme";
 
 const APP_FOLDER = carpeta;
 
@@ -197,10 +199,15 @@ export default function CameraCapture() {
 
   if (!permission.granted) {
     return (
-      <View style={styles.container}>
-        <Text>Necesitamos permisos para usar la cámara</Text>
-        <Button title="Dar permiso" onPress={requestPermission} />
+          <ImageBackground source={require("../../../../../assets/backgroundApp.png")} style={[styles.container]} resizeMode="cover">
+
+      <View style={styles.container2}>
+        <Text style={{fontSize:20, marginBottom: 50}}>Necesitamos permisos para usar la cámara</Text>
+        <Pressable style={{backgroundColor:colors.primary, padding:10, borderRadius:20}} onPress={requestPermission} >
+          <Text style={{fontSize:18, fontWeight:"bold", color:"white"}}>Dar permiso</Text>
+          </Pressable>
       </View>
+      </ImageBackground>
     );
   }
 
