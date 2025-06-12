@@ -59,7 +59,7 @@ export const HomeScreen = () => {
   return (
     <ImageBackground source={require("../../../../assets/backgroundApp.png")} style={[styles.container, { paddingTop: top }]} resizeMode="cover">
       <CarouselFold />
-      <Text style={{marginTop:30,fontSize:54,fontFamily:"GreatVibes_400Regular"}}>{"Hola "+ nameShown}</Text>
+      <Text style={{marginTop:30,fontSize:54,fontFamily:"GreatVibes_400Regular"}}>Fotos</Text>
       <Gallery  key={refreshGallery} />
       <ImageSelector
         onImageSaved={() => {

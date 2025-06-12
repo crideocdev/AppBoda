@@ -1,28 +1,28 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { globalStyles } from '../../../config/theme/theme';
+import { globalStyles } from './DialogScreenStyles';
 import { useNameStore } from '../../store/useNameStore';
-import { useIntroStore } from "../../store/useIntroStore";
+import { useIntroStore } from '../../store/useIntroStore';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParams } from '../../navigations/Navigation';
+import { CustomAlert } from '../../components/ui/CustomAlert';
 
-type NavigationProp = StackNavigationProp<RootStackParams, "Dialog">;
+type NavigationProp = StackNavigationProp<RootStackParams, 'Dialog'>;
 
 export const DialogScreen = () => {
   const [name, setName] = useState('');
-
-  const {nameShown, setNameShown} = useNameStore();
+  const [showAlert, setShowAlert] = useState(false);
+  const { setNameShown } = useNameStore();
   const navigation = useNavigation<NavigationProp>();
-    const {setIntroShown} = useIntroStore();
-  
-   const handleContinue = () => {
+  const { setIntroShown } = useIntroStore();
+
+  const handleContinue = () => {
     setIntroShown();
     navigation.reset({
       index: 0,
-     routes:[{name:"Home"}]
+      routes: [{ name: 'Home' }],
     });
-    // navigation.navigate("App");
   };
 
   const handleConfirm = () => {
@@ -32,14 +32,7 @@ export const DialogScreen = () => {
     }
 
     setNameShown(name);
-
-    // Aquí podrías guardar el nombre o navegar
-    Alert.alert('Nombre ingresado:', name);
-
-    handleContinue();
-
-
-
+    setShowAlert(true);
   };
 
   return (
@@ -54,7 +47,17 @@ export const DialogScreen = () => {
       <TouchableOpacity style={globalStyles.btnFixed} onPress={handleConfirm}>
         <Text style={globalStyles.btnFixedText}>Confirmar</Text>
       </TouchableOpacity>
+
+      {/*Aspecto de mejora que aparezca en el wellcome*/}
+      {/* ALERTA PERSONALIZADA AQUÍ */}
+      <CustomAlert
+        visible={showAlert}
+        message={name}
+        onClose={() => {
+          setShowAlert(false);
+          handleContinue();
+        }}
+      />
     </View>
   );
 };
-
