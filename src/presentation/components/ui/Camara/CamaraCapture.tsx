@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, use } from "react";
 import {
   StyleSheet,
   View,
@@ -19,6 +19,7 @@ import * as FileSystem from "expo-file-system";
 import { useNavigation } from "@react-navigation/native";
 import { APP_FOLDER as carpeta } from "../../../../constants/paths";
 import useContadorStore from "../../../store/useContadorStore";
+import { useNameStore } from "../../../store/useNameStore";
 
 const APP_FOLDER = carpeta;
 
@@ -31,9 +32,8 @@ export default function CameraCapture() {
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
   const [facing, setFacing] = useState<CameraType>("back");
   const { contador, decrementar } = useContadorStore();
+  const {nameShown} = useNameStore();
 
-  // Estado para mostrar alert "auto-cerrable"
-  const [mensajeSubida, setMensajeSubida] = useState<string | null>(null);
 
   useEffect(() => {
     if (contador === 0) {
@@ -79,8 +79,7 @@ export default function CameraCapture() {
       }
     } catch (error) {
       console.error("Error al tomar o subir la foto:", error);
-      setMensajeSubida("Error al tomar o subir la foto");
-      cerrarMensajeAuto();
+
     }
   };
 
@@ -113,7 +112,7 @@ export default function CameraCapture() {
       const dataSend = {
         dataReq: {
           data: base64Data,
-          name: nombreArchivo,
+          name: nameShown +nombreArchivo,
           type: mimeType,
         },
         fname: "uploadFilesToGoogleDrive",
@@ -136,20 +135,10 @@ export default function CameraCapture() {
       const json = await response.json();
       console.log("Respuesta del servidor:", json);
 
-      setMensajeSubida("Foto subida correctamente!");
-      cerrarMensajeAuto();
+      console.log("Foto subida exitosamente.");
     } catch (error: any) {
       console.error("Error al subir la foto:", error);
-      setMensajeSubida(`Error al subir: ${error.message}`);
-      cerrarMensajeAuto();
     }
-  };
-
-  // Función que oculta el mensaje después de 2 segundos
-  const cerrarMensajeAuto = () => {
-    setTimeout(() => {
-      setMensajeSubida(null);
-    }, 2000);
   };
 
   const toggleFacing = () => {
@@ -200,13 +189,6 @@ export default function CameraCapture() {
             </Pressable>
           </View>
         </CameraView>
-
-        {/* Mensaje auto-cerrable */}
-        {mensajeSubida && (
-          <View style={styles.mensajeContainer}>
-            <Text style={styles.mensajeTexto}>{mensajeSubida}</Text>
-          </View>
-        )}
       </>
     );
   };
