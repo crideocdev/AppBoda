@@ -84,22 +84,32 @@ export const ImageSelector = ({ onImageSaved }: { onImageSaved?: () => void }) =
         aspect: [1, 1],
       });
 
-      if (!result.canceled && result.assets) {
 
+      if (!result.canceled){
         for (const asset of result.assets) {
-          if (contador <= 0) break;
-
-          const filename = asset.uri.split('/').pop() || `foto_${Date.now()}.jpg`;
-          const mimeType = getMimeType(filename);
+          // if (contador <= 0) break;
+           const filename = asset.uri.split('/').pop() || `foto_${Date.now()}.jpg`;
           const destPath = INTERNAL_DIR + filename;
-
+          decrementar();
           // Copiar localmente
           await FileSystem.copyAsync({
             from: asset.uri,
             to: destPath,
           });
+        }
 
-          decrementar();
+      }
+
+      if (!result.canceled && result.assets) {
+
+        for (const asset of result.assets) {
+          // if (contador <= 0) break;
+          //  decrementar();
+
+          const filename = asset.uri.split('/').pop() || `foto_${Date.now()}.jpg`;
+          const mimeType = getMimeType(filename);
+          const destPath = INTERNAL_DIR + filename;
+         
           onImageSaved?.();
 
           await subirImagenAGoogleDrive(destPath, mimeType, nameShown+filename);
