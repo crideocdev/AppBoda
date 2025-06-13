@@ -31,13 +31,14 @@ export const Navigation = () => {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName="Welcome"
+      //initialRouteName="Welcome"
     >
-      <Stack.Screen name="Welcome" component={WelcomeScreen} />
+      
 
 
       {!introShown ? (
         <>
+          <Stack.Screen name="Welcome" component={WelcomeScreen} />
           <Stack.Screen name="SlideShow" component={SlideShowScreen} />
           <Stack.Screen name="Dialog" component={DialogScreen} />
         </>

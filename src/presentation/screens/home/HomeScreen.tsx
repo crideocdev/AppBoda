@@ -41,6 +41,7 @@ export const HomeScreen = () => {
     try {
       const files = await FileSystem.readDirectoryAsync(INTERNAL_DIR);
     } catch (error) {
+      //Creacion de directorio
       console.error("Error leyendo imágenes:", error);
     }
   };

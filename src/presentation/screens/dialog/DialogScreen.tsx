@@ -33,6 +33,7 @@ export const DialogScreen = () => {
 
     setNameShown(name);
     setShowAlert(true);
+    handleContinue();
   };
 
   return (
@@ -50,14 +51,14 @@ export const DialogScreen = () => {
 
       {/*Aspecto de mejora que aparezca en el wellcome*/}
       {/* ALERTA PERSONALIZADA AQUÍ */}
-      <CustomAlert
+      {/* <CustomAlert
         visible={showAlert}
         message={name}
         onClose={() => {
           setShowAlert(false);
           handleContinue();
         }}
-      />
+      /> */}
     </View>
   );
 };
